@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour {
-
+    public Text scoreText;
+    private int score;
     private int selectedZombiePosition;
     public GameObject selectedZombie;   // Variável para armazenar o zombie selecinado
     //public List<GameObject> zombies;  //Cria uma array para add os zombies
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         SelectZombie(0);
+        scoreText.text = "Score: " + score;
 	}
 	
 	// Update is called once per frame
@@ -28,7 +31,7 @@ public class GameManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown("up")) {
-
+            PushUp();
         }
     }
 
@@ -49,11 +52,24 @@ public class GameManager : MonoBehaviour {
     }
 
 
+    void PushUp() {
+        Rigidbody rb = selectedZombie.GetComponent<Rigidbody>();
+        rb.AddForce(0, 0, 15, ForceMode.Impulse);
+    }
+    
+
     void SelectZombie (int IndexNewZombie) {
         print(IndexNewZombie);  
         zombies[selectedZombiePosition].transform.localScale = defaultSize;
         zombies[IndexNewZombie].transform.localScale = selectedSize;
-        selectedZombiePosition = IndexNewZombie;
+        selectedZombiePosition = IndexNewZombie;  
+        selectedZombie = zombies[IndexNewZombie]; // Armazenando novo zombie selecionado
+    }
+
+
+    public void AddPoint () {
+        score = score + 1;
+        scoreText.text = "Score:" + score;
     }
 
     
